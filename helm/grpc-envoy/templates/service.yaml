@@ -13,5 +13,11 @@ spec:
       protocol: TCP
       name: {{ .name }}
     {{- end }}
+    {{- range .Values.sidecar.ports }}
+    - port: {{ .port }}
+      targetPort: {{ .port }}
+      protocol: TCP
+      name: {{ .name }}
+    {{- end }}
   selector:
     {{- include "grpc-envoy.selectorLabels" . | nindent 4 }}

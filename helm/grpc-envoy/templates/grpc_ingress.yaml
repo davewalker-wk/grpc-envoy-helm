@@ -1,8 +1,8 @@
-{{- if .Values.http_ingress.enabled -}}
+{{- if .Values.grpc_ingress.enabled -}}
 {{- $fullName := include "grpc-envoy.fullname" . -}}
-{{- if and .Values.http_ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
-  {{- if not (hasKey .Values.http_ingress.annotations "kubernetes.io/ingress.class") }}
-  {{- $_ := set .Values.http_ingress.annotations "kubernetes.io/ingress.class" .Values.http_ingress.className}}
+{{- if and .Values.grpc_ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
+  {{- if not (hasKey .Values.grpc_ingress.annotations "kubernetes.io/ingress.class") }}
+  {{- $_ := set .Values.grpc_ingress.annotations "kubernetes.io/ingress.class" .Values.grpc_ingress.className}}
   {{- end }}
 {{- end }}
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
@@ -14,20 +14,20 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ $fullName }}-grpc
   labels:
     {{- include "grpc-envoy.labels" . | nindent 4 }}
-  {{- with .Values.http_ingress.annotations }}
+  {{- with .Values.grpc_ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if and .Values.http_ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
-  ingressClassName: {{ .Values.http_ingress.className }}
+  {{- if and .Values.grpc_ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.grpc_ingress.className }}
   {{- end }}
-  {{- if .Values.http_ingress.tls }}
+  {{- if .Values.grpc_ingress.tls }}
   tls:
-    {{- range .Values.http_ingress.tls }}
+    {{- range .Values.grpc_ingress.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
@@ -36,7 +36,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.http_ingress.hosts }}
+    {{- range .Values.grpc_ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:

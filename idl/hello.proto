@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package wdesk.grpc.greeter;
+
 option go_package = "./greeter";
 
 service Greeter {

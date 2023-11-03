@@ -6,3 +6,7 @@ plugins:
     out: gen
   - plugin: go-grpc
     out: gen
+  - plugin: dart
+    out: lib
+    opt:
+      - grpc
