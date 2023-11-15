@@ -47,8 +47,8 @@ service:
   ports:
     - port: 8080
       name: grpc
-    - port: 8089
-      name: test
+    - port: 9090
+      name: rest
 
 grpc_ingress:
   enabled: true
@@ -56,6 +56,7 @@ grpc_ingress:
   annotations:
    kubernetes.io/ingress.class: "nginx"
    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+   nginx.ingress.kubernetes.io/server-snippet: "grpc_buffer_size 16m;"
   hosts:
     - host: localhost
       paths:
@@ -74,12 +75,17 @@ http_ingress:
     nginx.ingress.kubernetes.io/cors-allow-headers: "authorization,access-control-allow-origin,cache-control,content-length,content-size,content-transfer-encoding,content-type,dnt,if-modified-since,keep-alive,newrelic,ot-tracer-sampled,ot-tracer-spanid,ot-tracer-traceid,pragma,range,sec-fetch-mode,user-agent,wk-esg-report-cycle,wk-esg-first-month,wk-esg-last-month,x-app-version,x-cloud-trace-context,x-correlation-id,x-http-method-override,x-launchdarkly-event-schema,x-launchdarkly-payload-id,x-launchdarkly-user-agent,x-launchdarkly-wrapper,x-messaging-client,x-messaging-session,x-requested-with,x-webfilings-subsession,x-workiva-account,x-workiva-accountrid,x-workiva-correlation,x-workiva-datasetid,x-workiva-membership,x-workiva-membershiprid,x-workiva-session,x-workiva-userrid,x-xsrf-token,x-grpc-web,x-user-agent"
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: "$1"
+    nginx.ingress.kubernetes.io/proxy-body-size: 16m
   hosts:
     - host: localhost
       paths:
         - path: /grpc-web(.*)
           pathType: ImplementationSpecific
           port: 8088
+        - path: /rest(.*)
+          pathType: ImplementationSpecific
+          port: 9090
+
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

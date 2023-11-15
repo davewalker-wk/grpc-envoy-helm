@@ -1,0 +1,23 @@
+version: v1
+managed:
+  enabled: true
+plugins:
+  # Go Service generated code
+  - plugin: go
+    out: ../server/gen
+  - plugin: go-grpc
+    out: ../server/gen
+  - plugin: buf.build/grpc-ecosystem/gateway:v2.16.0
+    out: ../server/gen
+    opt:
+      - generate_unbound_methods=true
+
+  # Dart Client gRPC-web generated code
+  - plugin: dart
+    out: ../dart/lib/gen
+    opt:
+      - grpc
+
+  # OpenAPI 2.0 spec for Dart REST client
+  - plugin: buf.build/grpc-ecosystem/openapiv2:v2.16.0
+    out: ./

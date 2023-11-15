@@ -1,8 +1,16 @@
+.PHONY: gen
+gen:
+	rm -fR server/gen dart/rest dart/lib/gen
+	cd idl && buf generate
+	@npx --yes @openapitools/openapi-generator-cli generate --generator-key client
+	cd dart/rest/greeter && dart pub get && dart pub run build_runner build --delete-conflicting-outputs
+	# protoc-dart && opeapi-generator mismatch
+	gsed -i '/pb.GrpcServiceName/d' dart/lib/gen/**/*pbgrpc.dart || sed -i '' '/pb.GrpcServiceName/d' dart/lib/gen/**/*pbgrpc.dart
+
 .PHONY: kubernetesRunning
 kubernetesRunning:
 	@kubectl config use-context docker-desktop || echo "ERROR: Please install kubernetes in docker desktop, and ensure your kubeconfig has docker-desktop context" && exit
 	@kubectl cluster-info &> /dev/null || echo "ERROR: Please install kubernetes in docker desktop" && exit
-
 
 .PHONY: buildImage
 buildImage:
@@ -28,14 +36,13 @@ helm:
 .PHONY: test
 test:
 	@echo "Testing if the service is reachable"
-	@grpcurl -proto idl/hello.proto -v -insecure -d '{"name": "it works"}' localhost:443 wdesk.grpc.greeter.Greeter/SayHello
+	@buf curl --protocol grpc --schema idl/greeter/service.proto -k https://localhost:443/wdesk.grpc.greeter.Greeter/SayHello -d '{"name": "it works"}'
 
 .PHONY: setup
-setup: kubernetesRunning buildImage nginx helm test
+setup: kubernetesRunning gen buildImage nginx helm test
 	@echo "Done"
 
 .PHONY: serve
 serve:
-	webdev serve web:9000
-	echo "http://localhost:9000"
+	cd dart && dart pub get && webdev serve web:9000
 

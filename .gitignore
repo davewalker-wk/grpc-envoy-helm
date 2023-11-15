@@ -2,4 +2,13 @@
 .idea
 .pubspec.lock
 
+node_modules/
+
+# generated
+dart/lib/gen/
+dart/rest/
+server/gen/
+
+server/vendor/
+
 *.iml

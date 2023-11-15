@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+option go_package = "./greeter";
+
+package wdesk.grpc.greeter;
+
+service Greeter {
+  rpc SayHello(HelloRequest) returns (HelloReply) {
+    option (google.api.http) = {
+      post: "/v1/hello"
+      body: "*"
+    };
+  }
+}
+message HelloRequest {
+  string name = 1;
+  bytes data = 2;
+}
+
+message HelloReply {
+  string name_response = 1;
+  bytes data_response = 2;
+}

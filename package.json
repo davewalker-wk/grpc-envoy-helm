@@ -1,0 +1,8 @@
+{
+  "name": "grpc-envoy-helm",
+  "version": "1.0.0",
+  "dependencies": {
+    "@apidevtools/swagger-cli": "^4.0",
+    "@openapitools/openapi-generator-cli": "^2.7"
+  }
+}

@@ -1,6 +1,6 @@
 FROM golang:1.21 as build
 
-COPY ./ $GOPATH/src/github.com/davewalker-wk/grpc-envoy-helm
+COPY server/ $GOPATH/src/github.com/davewalker-wk/grpc-envoy-helm
 WORKDIR $GOPATH/src/github.com/davewalker-wk/grpc-envoy-helm
 
 RUN go build -o server main.go

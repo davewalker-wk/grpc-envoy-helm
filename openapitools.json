@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "6.6.0",
+    "generators": {
+      "client": {
+        "generatorName": "dart-dio",
+        "inputSpec": "idl/greeter/service.swagger.json",
+        "output": "dart/rest/greeter",
+        "additionalProperties": {
+          "pubName": "greeter",
+          "pubLibrary": "greeter.api",
+          "ensureUniqueParams": false
+        }
+      }
+    }
+  }
+}

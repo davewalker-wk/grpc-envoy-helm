@@ -51,7 +51,7 @@ spec:
               protocol: TCP
             {{- end }}
             - name: http-health
-              containerPort: 80
+              containerPort: 88
               protocol: TCP
           livenessProbe:
             httpGet:

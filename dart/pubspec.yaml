@@ -1,0 +1,18 @@
+name: grpc_web
+description: Dart gRPC-Web sample client
+publish_to: none
+
+environment:
+  sdk: '>=2.19.6 <3.0.0'
+
+dependencies:
+  grpc: ^3.1.0
+  protobuf: ^2.0.0
+  greeter:
+    path: rest/greeter
+
+dev_dependencies:
+  built_value_generator: '>=8.4.0 <9.0.0'
+  build_runner: ^2.3.3
+  build_web_compilers: ^3.2.0
+  lints: ^2.0.0
